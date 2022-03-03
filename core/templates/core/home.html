@@ -1,0 +1,84 @@
+{% extends 'core/app.html' %}
+{% block title %} Calculated data {% endblock title %}
+{% block content %}
+  <div class="container">
+    <div class="row mt-5 shadow">
+         {% if user.is_authenticated %}
+        <div class="col-md-4 ">
+            <div class="p-3 border">
+                <h4>Add data</h4>
+                <p>example to add data :" 65.7 milion"</p>
+                <hr>
+                <form method="POST" class="form-group">
+                    {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" placeholder="Enter your Country" name="country" class="form-control" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" placeholder="Enter Population" name="population" class="form-control" required>
+                        </div>
+                        <button class="btn btn-success fw-bold text-uppercase w-100">ADD data</button>
+                </form>
+              
+                <div class="col-md-12  mt-5" style="overflow: scroll; height: 50vh;">
+                    {% for data in data %}
+                    <div class="mb-2 m-auto  py-2 rounded row col-md-12 border">
+                               <div class="row  col-md-12" style="display: flex;">
+                                    <span  class="px-3 py-3"> {{ data.country }}</span>
+                               </div>
+                               <div>
+                                <a href="{% url 'update' data.pk %}" class="btn btn-primary fw-bold text-uppedrcase">Edit</a>
+                                <a href="{% url 'delete' data.pk %}" class="btn btn-danger fw-bold text-uppedrcase">Delete</a>
+                               
+                            </div>
+                    </div>
+                    {% endfor %}  
+                </div>
+            </div>
+            {% else %}
+            <small class="pt-3">To Create ,Edit or Delete data login as</small><h4 class="py-3"> username : admin <br> password: adminpassword </h4>
+            {% endif %}
+        </div>
+    <div class="col-md-8">
+        <canvas id="myChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['{% for data in data %}' + '{{ data.country }}',  '{% endfor %}'],
+            datasets: [{
+                label: 'count in milions',
+                data: ['{% for data in data %}' + '{{  data.population  }}' ,  '{% endfor %}'],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64,1)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+{% endblock content %}

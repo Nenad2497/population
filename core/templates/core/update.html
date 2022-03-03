@@ -1,0 +1,29 @@
+{% extends 'core/app.html' %}
+{% block title %} Calculated data {% endblock title %}
+{% block content %}
+  <div class="container">
+    <div class="row mt-5 shadow">
+        <div class="col-md-8 m-auto ">
+            <div class="p-3 border">
+                <h4>Add data</h4>
+               
+                <hr>
+                <form method="POST" class="form-group">
+                    {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" value="{{ update_data.country }}" name="country" class="form-control" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" value="{{ update_data.population }}" placeholder="Enter Population" name="population" class="form-control" required>
+                        </div>
+                        <button class="btn btn-success fw-bold text-uppercase w-100">Update</button> 
+                </form>
+             
+            </div>
+        </div>
+<div class="col-md-8">
+        <canvas id="myChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div>
+{% endblock content %}
